@@ -5,6 +5,10 @@ let filteredIpas = [];
 let currentPage = 1;
 const itemsPerPage = 20; // Number of IPAs per page, increased from 10 to 20
 
+// IMPORTANT: Replace this with the URL of your deployed external proxy API
+// Example: const EXTERNAL_PROXY_API_URL = 'https://your-serverless-function-domain.com/get-onedrive-download-link';
+const EXTERNAL_PROXY_API_URL = 'https://external-proxy-server.vercel.app/'; 
+
 document.addEventListener('DOMContentLoaded', () => {
     // Check for iOS version and resolution for old style
     checkDeviceAndApplyOldStyle();
@@ -129,11 +133,47 @@ function renderIpaList() {
             <p><strong>大小:</strong> ${(ipa.size / (1024 * 1024)).toFixed(2)} MB</p>
             <p><strong>路径:</strong> ${ipa.path}</p>
             <p><strong>上传时间:</strong> ${new Date(ipa.uploadedAt).toLocaleDateString()}</p>
-            <a href="${ipa.downloadUrl}" class="download-btn" target="_blank">下载</a>
+            <button class="download-btn" data-ipa-id="${ipa.id}">下载</button>
         `;
+        // Add event listener to the button
+        const downloadBtn = ipaItem.querySelector('.download-btn');
+        downloadBtn.addEventListener('click', () => handleDownloadClick(ipa.id, downloadBtn));
+
         ipaListContainer.appendChild(ipaItem);
     });
 }
+
+// Function to handle download button click and fetch real-time URL
+async function handleDownloadClick(ipaId, buttonElement) {
+    if (!EXTERNAL_PROXY_API_URL || EXTERNAL_PROXY_API_URL === 'YOUR_EXTERNAL_PROXY_API_URL_HERE') {
+        displayMessage('配置错误', '请在 script.js 中配置 EXTERNAL_PROXY_API_URL。');
+        return;
+    }
+
+    const originalButtonText = buttonElement.textContent;
+    buttonElement.textContent = '正在获取链接...';
+    buttonElement.disabled = true;
+
+    try {
+        const response = await fetch(`${EXTERNAL_PROXY_API_URL}?ipaId=${ipaId}`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        if (data.downloadUrl) {
+            window.location.href = data.downloadUrl; // Redirect to the fresh download URL
+        } else {
+            displayMessage('下载失败', '未能获取到下载链接。');
+        }
+    } catch (error) {
+        console.error('Error fetching real-time download URL:', error);
+        displayMessage('下载失败', `获取下载链接时发生错误: ${error.message}`);
+    } finally {
+        buttonElement.textContent = originalButtonText;
+        buttonElement.disabled = false;
+    }
+}
+
 
 // Function to render pagination buttons
 function renderPagination() {
