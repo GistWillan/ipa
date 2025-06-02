@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPA 下载站 - 下载</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>IPA 应用下载</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">主页</a></li>
+                    <li><a href="download.html">下载</a></li>
+                    <li><a href="about.html">关于</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="content-section">
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="搜索 IPA 应用名称或路径...">
+                <button id="viewAllIpasBtn">查看所有 IPA</button>
+            </div>
+
+            <div id="ipaList" class="ipa-list">
+                <p style="text-align: center; color: #777;">正在加载IPA应用...</p>
+            </div>
+
+            <div id="pagination" class="pagination">
+                </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 IPA 下载站. 保留所有权利。</p>
+        </footer>
+    </div>
+
+    <div id="messageBoxOverlay" class="message-box-overlay">
+        <div class="message-box">
+            <h4 id="messageBoxTitle"></h4>
+            <p id="messageBoxContent"></p>
+            <button id="messageBoxCloseBtn">确定</button>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
