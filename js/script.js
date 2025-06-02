@@ -7,7 +7,7 @@ const itemsPerPage = 20; // Number of IPAs per page, increased from 10 to 20
 
 // IMPORTANT: Replace this with the URL of your deployed external proxy API
 // Example: const EXTERNAL_PROXY_API_URL = 'https://your-serverless-function-domain.com/get-onedrive-download-link';
-const EXTERNAL_PROXY_API_URL = 'https://external-proxy-server.vercel.app/'; 
+const EXTERNAL_PROXY_API_URL = 'https://external-proxy-server.vercel.app/get-onedrive-download-link'; 
 
 document.addEventListener('DOMContentLoaded', () => {
     // Check for iOS version and resolution for old style
