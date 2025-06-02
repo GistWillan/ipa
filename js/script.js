@@ -7,7 +7,8 @@ const itemsPerPage = 20; // Number of IPAs per page, increased from 10 to 20
 
 // IMPORTANT: Replace this with the URL of your deployed external proxy API
 // Example: const EXTERNAL_PROXY_API_URL = 'https://your-serverless-function-domain.com/get-onedrive-download-link';
-const EXTERNAL_PROXY_API_URL = 'https://external-proxy-server.vercel.app'; 
+// This URL will be provided by your serverless function or VPS deployment.
+const EXTERNAL_PROXY_API_URL = 'https://external-proxy-server.vercel.app'; // <--- 确保这里填入了你的代理服务URL
 
 document.addEventListener('DOMContentLoaded', () => {
     // Check for iOS version and resolution for old style
@@ -155,6 +156,7 @@ async function handleDownloadClick(ipaId, buttonElement) {
     buttonElement.disabled = true;
 
     try {
+        // Call the external proxy service to get the real-time download URL
         const response = await fetch(`${EXTERNAL_PROXY_API_URL}?ipaId=${ipaId}`);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
